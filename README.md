@@ -1,8 +1,8 @@
-# UC-AIv2 🤖
+# UC-AIv2
 
 An advanced Discord bot powered by Hugging Face AI models with configurable personality. Choose between local model hosting or Hugging Face Inference API for dynamic, personality-driven responses.
 
-## Features ✨
+## Features
 
 - **Flexible AI Backend**: Local models or Hugging Face Inference API
 - **Configurable Personality**: Set any AI personality via environment variables
@@ -10,7 +10,7 @@ An advanced Discord bot powered by Hugging Face AI models with configurable pers
 - **Smart Response Logic**: Always responds to mentions, occasionally to random messages
 - **Easy Configuration**: Extensive .env configuration for all settings
 
-## Installation 🚀
+## Installation
 
 ### Prerequisites
 - Python 3.8+
@@ -70,7 +70,7 @@ RANDOM_RESPONSE_CHANCE=0.1
 PROMPT=
 ```
 
-## Available AI Models 🤖
+## Available AI Models
 
 Choose from any text-generation model available on Hugging Face:
 
@@ -87,7 +87,7 @@ Any model from: https://huggingface.co/models?pipeline_tag=text-generation&sort=
 ### For API Mode (LOCAL=False):
 Models available via: https://huggingface.co/docs/inference-endpoints/index
 
-## How It Works 🧠
+## How It Works
 
 ### Response Logic
 - **Mentions**: Always responds with 0-10 second delay
@@ -103,12 +103,12 @@ The UC-AIv2 Humanizer creates realistic Discord interactions:
 ### AI Personality
 Set your desired personality in the PROMPT environment variable. The bot will respond in character to every message. Leave empty for a default conversational personality.
 
-## Commands 💬
+## Commands
 
 - `!info` - Display bot information, uptime, and current model
 - `!help` - Show available commands
 
-## Getting API Keys 🔑
+## Getting API Keys
 
 ### Discord Bot Token
 1. Go to https://discord.com/developers/applications
@@ -121,7 +121,7 @@ Set your desired personality in the PROMPT environment variable. The bot will re
 2. Create a new token with "Read" permissions
 3. Copy the token to `HF_TOKEN` in your .env
 
-## Troubleshooting 🔧
+## Troubleshooting
 
 ### Bot doesn't respond
 - Check that `CHANNEL_ID` matches your Discord channel
@@ -137,11 +137,11 @@ Set your desired personality in the PROMPT environment variable. The bot will re
 - Install missing dependencies: `pip install -r requirements.txt`
 - Ensure Python 3.8+ is being used
 
-## License 📄
+## License
 
 This project is open source. Feel free to modify and distribute.
 
-## Credits 🙏
+## Credits
 
 - Powered by Hugging Face Transformers and Inference API
 - Built with discord.py
