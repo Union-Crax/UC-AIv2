@@ -1,7 +1,7 @@
-require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
-const { pipeline } = require('@xenova/transformers');
-const fetch = require('node-fetch');
+import 'dotenv/config';
+import { Client, GatewayIntentBits, EmbedBuilder } from 'discord.js';
+import { pipeline } from '@xenova/transformers';
+import fetch from 'node-fetch';
 
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const CHANNEL_ID = parseInt(process.env.CHANNEL_ID);
