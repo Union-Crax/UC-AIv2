@@ -20,7 +20,7 @@ The bot remembers recent conversation turns, responds to mentions, and supports 
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Node.js 16 or higher
 - Discord Bot Token
 - If using OpenRouter: an OpenRouter API Key
 - Optional: GPU for local model acceleration
@@ -35,10 +35,10 @@ cd UC-AIv2
 
 ### Step 2: Install Dependencies
 ```bash
-pip install discord.py python-dotenv requests transformers torch
+npm install
 ```
 
-**Note:** `transformers` and `torch` are only required if `LOCAL=True`.
+**Note:** `@xenova/transformers` is only required if `LOCAL=True`.
 
 ### Step 3: Configure Environment
 ```bash
@@ -155,7 +155,7 @@ Set the desired AI personality in the `PROMPT` environment variable. The bot wil
 ### Missing dependencies
 
 ```bash
-pip install -r requirements.txt
+npm install
 ```
 
 ---
@@ -169,5 +169,5 @@ This project is open-source. Feel free to modify and redistribute.
 ## Credits 🙏
 
 - Powered by Hugging Face Transformers and OpenRouter
-- Built with discord.py
+- Built with discord.js
 - Inspired by the UC-AIv1 project and union-crax.xyz community

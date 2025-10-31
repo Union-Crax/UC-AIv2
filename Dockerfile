@@ -1,15 +1,18 @@
-FROM python:3.11-slim
+FROM node:18-slim
 
 WORKDIR /app
 
+# Copy package files
+COPY package*.json ./
+
 # Install dependencies
-RUN pip install --no-cache-dir discord.py python-dotenv transformers torch requests
+RUN npm install
 
 # Copy source code
-COPY bot.py .
+COPY index.js .
 
-# Copy environment file (if needed, or mount at runtime)
+# Copy environment file
 COPY .env .env
 
 # Run the bot
-CMD ["python", "bot.py"]
+CMD ["npm", "start"]
