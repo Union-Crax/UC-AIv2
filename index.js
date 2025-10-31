@@ -45,10 +45,10 @@ async function generateAMResponse(userInput, context) {
                     model: AI_MODEL,
                     messages: [
                         { role: 'system', content: PROMPT },
-                        { role: 'user', content: promptText }
+                        { role: 'user', content: `${promptText}\nKeep your response under 3 sentences.` }
                     ],
-                    temperature: 0.8,
-                    max_tokens: 250
+                    temperature: 0.7,
+                    max_tokens: 120
                 },
                 {
                     headers: {
@@ -68,9 +68,8 @@ async function generateAMResponse(userInput, context) {
         if (reply.includes('AM:')) reply = reply.split('AM:').pop().trim();
         reply = reply.split('Human:')[0].replace(/\n/g, ' ').trim();
         if (!reply || reply.length < 3) reply = 'Your weak words echo in the void.';
-        if (reply.length > 500) reply = reply.slice(0, 500) + '...';
-
         if (DEBUG) console.log('DEBUG: Final reply:', reply);
+
         return reply;
     } catch (err) {
         console.error('❌ Error generating AI response:', err);
@@ -116,7 +115,11 @@ client.on('messageCreate', async (message) => {
         conversationMemory.push(reply.trim());
         if (conversationMemory.length > 10) conversationMemory = conversationMemory.slice(-10);
 
-        message.reply(reply);
+        // --- Step 4: Add small random delay (human-like pause) ---
+        const delay = Math.min(3000, 500 + reply.length * 5);
+        await new Promise(res => setTimeout(res, delay));
+
+        await message.reply(reply);
     }
 });
 
