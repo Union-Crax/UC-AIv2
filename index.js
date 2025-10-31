@@ -145,22 +145,78 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) return;
+client.on('messageCreate', async (message) => {
+    if (message.author.bot || message.channel.id !== CHANNEL_ID) return;
 
-    if (interaction.commandName === 'info') {
-        const uptime = Date.now() - START_TIME;
-        const hours = Math.floor(uptime / 3600000);
-        const minutes = Math.floor((uptime % 3600000) / 60000);
-        const seconds = Math.floor((uptime % 60000) / 1000);
+    // Handle commands
+    if (message.content.startsWith('!')) {
+        const args = message.content.slice(1).trim().split(/ +/);
+        const command = args.shift().toLowerCase();
 
-        const embed = new EmbedBuilder()
-            .setTitle('UC-AIv2 Info')
-            .setColor(0x00ff00)
-            .addField('Model', AI_MODEL, true)
-            .addField('Uptime', `${hours}h ${minutes}m ${seconds}s`, true);
+        if (command === 'info') {
+            const uptime = Date.now() - START_TIME;
+            const hours = Math.floor(uptime / 3600000);
+            const minutes = Math.floor((uptime % 3600000) / 60000);
+            const seconds = Math.floor((uptime % 60000) / 1000);
 
-        await interaction.reply({ embeds: [embed] });
+            const embed = new EmbedBuilder()
+                .setTitle('UC-AIv2 Info')
+                .setColor(0x00ff00)
+                .addField('Model', AI_MODEL, true)
+                .addField('Uptime', `${hours}h ${minutes}m ${seconds}s`, true);
+
+            await message.reply({ embeds: [embed] });
+            return;
+        }
+
+        if (command === 'help') {
+            const embed = new EmbedBuilder()
+                .setTitle('UC-AIv2 Help')
+                .setColor(0x00ff00)
+                .setDescription('Available commands:')
+                .addField('!info', 'Display bot information and uptime')
+                .addField('!help', 'Show this help message')
+                .addField('Mention the bot', 'Get an AI response')
+                .addField('Random responses', `Bot may respond randomly (${(RANDOM_RESPONSE_CHANCE * 100).toFixed(1)}% chance)`);
+
+            await message.reply({ embeds: [embed] });
+            return;
+        }
+    }
+
+    const currentTime = Date.now();
+    let shouldRespond = false;
+
+    if (message.mentions.has(client.user)) {
+        shouldRespond = true;
+    } else if (Math.random() < RANDOM_RESPONSE_CHANCE && currentTime - lastResponseTime > 10000) {
+        shouldRespond = true;
+        lastResponseTime = currentTime;
+    }
+
+    if (shouldRespond) {
+        await message.channel.sendTyping();
+
+        let userInput = message.content;
+
+        if (message.reference) {
+            try {
+                const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
+                userInput = `(In response to '${repliedTo.content}') ${userInput}`;
+            } catch (error) {
+                if (DEBUG) console.log(`DEBUG: Could not fetch replied message: ${error}`);
+            }
+        }
+
+        const reply = await generateAMResponse(userInput, conversationMemory);
+
+        conversationMemory.push(userInput.trim());
+        conversationMemory.push(reply.trim());
+        if (conversationMemory.length > 10) {
+            conversationMemory = conversationMemory.slice(-10);
+        }
+
+        await message.reply(reply);
     }
 });
 

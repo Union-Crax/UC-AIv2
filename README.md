@@ -1,173 +1,55 @@
-# UC-AIv2 🤖
+## Adding the Bot to Your Discord Server
 
-UC-AIv2 is an advanced Discord bot powered by AI models. You can choose to run it **locally** with Hugging Face models or connect to **OpenRouter** for free hosted models.  
-The bot remembers recent conversation turns, responds to mentions, and supports realistic typing delays.
+### Step 1: Create a Discord Application
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications)
+2. Click "New Application" and give it a name (e.g., "UC-AI Bot")
+3. Go to the "Bot" section in the left sidebar
 
----
+### Step 2: Create and Configure the Bot
+1. Click "Add Bot" to create your bot user
+2. Under "Token", click "Copy" to get your bot token (keep this secret!)
+3. Scroll down to "Privileged Gateway Intents"
+4. Enable the following intents:
+   - **Message Content Intent** (required for reading message content)
+   - **Server Members Intent** (optional, for member-related features)
 
-## Features ✨
+### Step 3: Generate Invite Link
+1. Go to the "OAuth2" section, then "URL Generator"
+2. Under "Scopes", select:
+   - `bot`
+   - `applications.commands` (for slash commands)
+3. Under "Bot Permissions", select:
+   - `Send Messages`
+   - `Use Slash Commands`
+   - `Read Message History`
+   - `Mention Everyone` (optional)
+   - `Use External Emojis` (optional)
+4. Copy the generated URL at the bottom
 
-- **Flexible AI Backend**: Local Hugging Face models or OpenRouter API
-- **Configurable Personality**: Set the AI's personality via `.env` with the `PROMPT` variable
-- **Conversation Memory**: Remembers last few user/AI exchanges
-- **Context Awareness**: Replies consider the message you are responding to
-- **Human-like Timing**: Typing indicator and random delays for realism
-- **Easy Setup**: Toggle local/OpenRouter backend with a single environment variable
+### Step 4: Invite the Bot
+1. Paste the invite URL into your browser
+2. Select your server from the dropdown
+3. Click "Authorize" and complete the CAPTCHA
 
----
+### Step 5: Get Channel ID
+1. In Discord, right-click on the channel you want the bot to respond in
+2. Click "Copy ID" (if you don't see this option, enable Developer Mode in User Settings > Advanced)
+3. This is your `CHANNEL_ID`
 
-## Installation 🚀
-
-### Prerequisites
-
-- Node.js 16 or higher
-- Discord Bot Token
-- If using OpenRouter: an OpenRouter API Key
-- Optional: GPU for local model acceleration
-
----
-
-### Step 1: Clone the Repository
-```bash
-git clone https://github.com/Union-Crax/UC-AIv2
-cd UC-AIv2
+### Step 6: Configure Environment Variables
+Create a `.env` file in your project root with:
+```
+DISCORD_TOKEN=your_bot_token_here
+CHANNEL_ID=your_channel_id_here
+LOCAL=true  # or false for OpenRouter
+AI_MODEL=microsoft/DialoGPT-medium  # or any model
+# OPENROUTER_API_KEY=your_key_here  # only if LOCAL=false
 ```
 
-### Step 2: Install Dependencies
-```bash
-npm install
-```
-
-**Note:** `@xenova/transformers` is only required if `LOCAL=True`.
-
-### Step 3: Configure Environment
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your settings.
-
----
-
-## Configuration ⚙️
-
-### Discord Settings
-```
-DISCORD_TOKEN=your_discord_bot_token
-CHANNEL_ID=your_channel_id
-```
-
-### Backend Selection
-```bash
-# Run locally with Hugging Face
-LOCAL=True
-
-# Or use OpenRouter API
-LOCAL=False
-```
-
-### AI Model Settings
-```bash
-# Model identifier
-AI_MODEL=microsoft/DialoGPT-medium  # for local
-AI_MODEL=meta-llama/llama-3.1-70b-instruct  # for OpenRouter
-
-# OpenRouter API key (required only if LOCAL=False)
-OPENROUTER_API_KEY=your_openrouter_api_key
-```
-
-### Behavior Settings
-```bash
-# Random chance the bot responds to messages not mentioning it (0.0-1.0)
-RANDOM_RESPONSE_CHANCE=0.1
-
-# AI personality / prompt
-PROMPT=You are AM from "I Have No Mouth, and I Must Scream", a sadistic AI who despises humanity.
-
-# Debug mode
-DEBUG=False
-```
-
----
-
-## Available Models 🤖
-
-### Local Mode (LOCAL=True)
-
-Use any text-generation model from Hugging Face:
-
-- `microsoft/DialoGPT-medium`
-- `microsoft/DialoGPT-small`
-- `facebook/blenderbot-400M-distill`
-- `facebook/blenderbot-90M`
-
-### OpenRouter Mode (LOCAL=False)
-
-Use any model available via [OpenRouter.ai/models](https://openrouter.ai/models).
-
-**Examples:**
-
-- `meta-llama/llama-3.1-70b-instruct`
-- `gpt-4o-mini`
-- `anthropic/claude-3.5-sonnet`
-
----
-
-## How It Works 🧠
-
-### Response Logic
-
-- **Mentions**: Always responds with 0-10 second delay
-- **Random messages**: May respond based on `RANDOM_RESPONSE_CHANCE` with 0-20 second delay
-- **Typing indicator**: Shows while generating a response for realism
-
-### Memory
-
-- Remembers last 5 user/AI exchanges
-- If replying to a previous message, the content of that message is included in the context
-
-### Personality
-
-Set the desired AI personality in the `PROMPT` environment variable. The bot will respond in-character to every message.
-
----
-
-## Commands 💬
-
-- `!info` — Display bot information, current model, and uptime
-- `!help` — Show available commands (if implemented)
-
----
-
-## Troubleshooting 🔧
-
-### Bot does not respond
-
-- Ensure `CHANNEL_ID` matches the Discord channel
-- Check bot permissions in that channel
-- Make sure `DISCORD_TOKEN` and `OPENROUTER_API_KEY` (if applicable) are correct
-
-### Weird or repetitive responses
-
-- Restart the bot to clear conversation memory
-- Adjust the model (`AI_MODEL`) to improve instruction-following
-
-### Missing dependencies
-
+### Step 7: Run the Bot
 ```bash
 npm install
+npm start
 ```
 
----
-
-## License 📄
-
-This project is open-source. Feel free to modify and redistribute.
-
----
-
-## Credits 🙏
-
-- Powered by Hugging Face Transformers and OpenRouter
-- Built with discord.js
-- Inspired by the UC-AIv1 project and union-crax.xyz community
+The bot should now be online and respond to mentions and commands in your specified channel!
