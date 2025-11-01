@@ -96,7 +96,6 @@ client.on('messageCreate', async (message) => {
     }
 
     if (shouldRespond) {
-        await message.channel.sendTyping();
         let userInput = message.content;
 
         // Include replied message context
@@ -109,15 +108,22 @@ client.on('messageCreate', async (message) => {
             }
         }
 
+        // === NEW: Delay before typing starts (simulate thinking) ===
+        const preTypingDelay = Math.floor(Math.random() * 2000) + 1000; // 1–3 seconds
+        await new Promise(res => setTimeout(res, preTypingDelay));
+
+        await message.channel.sendTyping();
+
         const reply = await generateAMResponse(userInput, conversationMemory);
 
         conversationMemory.push(userInput.trim());
         conversationMemory.push(reply.trim());
         if (conversationMemory.length > 10) conversationMemory = conversationMemory.slice(-10);
 
-        // --- Step 4: Add small random delay (human-like pause) ---
-        const delay = Math.min(3000, 500 + reply.length * 5);
-        await new Promise(res => setTimeout(res, delay));
+        // === NEW: Delay based on word count (simulate typing duration) ===
+        const wordCount = reply.split(/\s+/).length;
+        const typingDuration = Math.min(8000, wordCount * 150 + Math.random() * 500); 
+        await new Promise(res => setTimeout(res, typingDuration));
 
         await message.reply(reply);
     }
